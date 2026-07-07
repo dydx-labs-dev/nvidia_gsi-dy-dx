@@ -41,10 +41,7 @@ def text_to_color(text, brightness_range=(60, 140)):
     return (int(b), int(g), int(r))
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
 # PROCEDURAL NOISE
-# ═══════════════════════════════════════════════════════════════════════════════
-
 def generate_perlin_noise(width, height, scale=50):
     """Generate smooth procedural noise using interpolated random gradients."""
     noise = np.zeros((height, width), dtype=np.float32)
@@ -58,10 +55,8 @@ def generate_perlin_noise(width, height, scale=50):
     return noise
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
 # UNIVERSAL BASE TEXTURE GENERATOR
 # Handles ANY part type by combining geometric features + material simulation
-# ═══════════════════════════════════════════════════════════════════════════════
 
 # Keywords mapped to shape/material generation strategies
 ROUND_PARTS = ["gear", "wheel", "bearing", "ball", "roller", "pulley", "disc", "disk",
