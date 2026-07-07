@@ -13,26 +13,18 @@ OmniForge is an end-to-end, decoupled software pipeline that acts as the intelli
 
 ## Architecture
 
-```mermaid
-graph TD
-    A["🗣️ Natural Language Prompt"] -->|"Streamlit UI"| B("🧠 LangGraph Agentic Orchestrator (NVIDIA NIM Llama 3.1)")
-    
-    B -->|"Extracts Intent & Physical Parameters"| C{"🛠️ CAD Matching Engine"}
-    
-    C -->|".usd / .usdz Match"| D["📦 Custom CAD Model"]
-    C -->|"No CAD Found"| E["🧊 AI-Generated Primitive"]
-    
-    D --> F
-    E --> F
-    
-    F(("🌌 NVIDIA Isaac Sim & Omniverse Replicator"))
-    
-    F -->|"Ray-Traced Domain Randomization"| G["📸 Synthetic Defect Dataset"]
-    
-    G -->|"Automated Transfer Learning"| H["🚀 YOLOv8 Edge Fine-Tuning (NVIDIA CUDA)"]
-    
-    B -->|"Calculates 6-Axis Joint Kinematics"| I
-    H -->|"Deploys Trained Network"| I(("🤖 Physical Factory Robot (ROS 2 Hardware Bridge)"))
+```text
+User Prompt ──► LangGraph Orchestrator (NVIDIA NIM Llama 3.1) ──► Structured Intent
+                                                                       │
+                    ┌──────────────────────────────────────────────────┤
+                    ▼                                                  ▼
+      NVIDIA Isaac Sim & Omniverse Replicator            YOLOv8 Edge Fine-Tuning (CUDA)
+      (Ray-Traced Synthetic Data Generation)             (Ultralytics Transfer Learning)
+      Generates N unique defect frames                           │
+      using matched CAD models or AI primitives                  ▼
+                                                  ROS 2 Hardware Bridge (rclpy)
+                                                  Deploys physical robot kinematics 
+                                                  and YOLO network to hardware
 ```
 
 ## Quick Start
