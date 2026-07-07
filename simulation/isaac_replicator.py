@@ -44,18 +44,28 @@ def generate_isaac_data(num_images: int, output_dir: str, defect_type: str, part
             search_names.append(base_name_underscore + 's')
             
         search_names = list(set(search_names))
+        
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             
         for name in search_names:
             for ext in [".usd", ".usdz", ".usda"]:
-                # Isaac Sim's python.bat changes the CWD to the NVIDIA install directory!
-                # We must resolve the path explicitly relative to this script's location (the root OmniForge folder).
-                project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+                # Check for exact matches first
                 test_path = os.path.join(project_root, f"{name}{ext}")
                 if os.path.exists(test_path):
                     cad_path = test_path
                     break
             if cad_path:
                 break
+                
+        # If no exact match, do a robust substring search in the root folder
+        if cad_path is None:
+            for f in os.listdir(project_root):
+                if f.endswith((".usd", ".usdz", ".usda")):
+                    f_name = os.path.splitext(f)[0].lower()
+                    if base_name.lower() in f_name or base_name_underscore.lower() in f_name:
+                        cad_path = os.path.join(project_root, f)
+                        print(f"[Isaac Replicator] Robust substring match found CAD model: {f}", flush=True)
+                        break
         
         # Create the AI-hallucinated Physical Material (for fallback shapes)
         ai_material = rep.create.material_omnipbr(
